@@ -1,19 +1,21 @@
-package es.unavarra.tlm.prueba.PantallaPrincipal;
+package es.unavarra.tlm.prueba;
 
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import es.unavarra.tlm.prueba.R;
-import es.unavarra.tlm.prueba.PantallaPrincipal.model.Producto;
+import es.unavarra.tlm.prueba.model.Producto;
 
 import java.util.List;
+
+import es.unavarra.tlm.prueba.model.Producto;
 
 public class AdaptadorProductos extends BaseAdapter {
 

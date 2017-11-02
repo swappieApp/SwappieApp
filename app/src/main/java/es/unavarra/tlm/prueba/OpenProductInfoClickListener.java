@@ -1,10 +1,10 @@
-package es.unavarra.tlm.prueba.PantallaPrincipal;
+package es.unavarra.tlm.prueba;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import es.unavarra.tlm.prueba.PantallaPrincipal.model.Producto;
+import es.unavarra.tlm.prueba.model.Producto;
 
 public class OpenProductInfoClickListener implements View.OnClickListener {
 
@@ -20,6 +20,6 @@ public class OpenProductInfoClickListener implements View.OnClickListener {
     public void onClick(View v) {
         String description = "Descripción: " + producto.getDescription();
         String location = "Localización: " + producto.getLocation();
-        Log.d("Main", description + "   " + location);
+        Toast.makeText(activity, description + "   " + location, Toast.LENGTH_SHORT);
     }
 }

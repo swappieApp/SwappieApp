@@ -1,16 +1,23 @@
 package es.unavarra.tlm.prueba;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -37,9 +44,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-
-import es.unavarra.tlm.prueba.PantallaPrincipal.UsuarioRegistrado;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,24 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if (user!=null){
-
-                    String name = user.getDisplayName();
-                    String imagen = String.valueOf(user.getPhotoUrl());
-                    String id = user.getUid();
-                    String email = user.getEmail();
-
-                    Log.d("etiqueta", name);
-                    Log.d("etiqueta", imagen);
-                    Log.d("etiqueta", id);
-
-                    SharedPreferences info = getSharedPreferences("Config", 0);
-                    SharedPreferences.Editor editor = info.edit();
-                    editor.putString("metodo","google");
-                    editor.putString("nombre",name);
-                    editor.putString("email",email);
-                    editor.putBoolean("sesion", true);
-                    editor.putString("foto", imagen);
-                    editor.commit();
 
                     Intent intent = new Intent(MainActivity.this,UsuarioRegistrado.class);
                     startActivity(intent);
@@ -221,7 +210,26 @@ public class MainActivity extends AppCompatActivity {
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
+
+
+                String name = account.getDisplayName();
+                String imagen = String.valueOf(account.getPhotoUrl());
+                String id = account.getIdToken();
+                String email = account.getEmail();
+
+
+                SharedPreferences info = getSharedPreferences("Config", 0);
+                SharedPreferences.Editor editor = info.edit();
+                editor.putString("metodo","google");
+                editor.putString("nombre",name);
+                editor.putString("email",email);
+                editor.putBoolean("sesion", true);
+                editor.putString("foto", imagen);
+                editor.commit();
+
+
                 firebaseAuthWithGoogle(account);
+
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
@@ -264,6 +272,15 @@ public class MainActivity extends AppCompatActivity {
         finish();
 
     }
+
+    public void loginEmail(View view){
+
+        Intent intent = new Intent(this, IniciarSesion.class);
+        startActivity(intent);
+        finish();
+
+    }
+
 
     public void logout(View view) {
         LoginManager.getInstance().logOut();

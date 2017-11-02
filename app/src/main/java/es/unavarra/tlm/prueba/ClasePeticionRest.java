@@ -1,9 +1,12 @@
 package es.unavarra.tlm.prueba;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,8 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-
-import es.unavarra.tlm.prueba.PantallaPrincipal.UsuarioRegistrado;
 
 /**
  * Created by ibai on 10/20/17.
@@ -231,6 +232,7 @@ public class ClasePeticionRest {
 
         String funcionAPI = "guardar_usuario";
         String nombre, apellidos, email, metodoLogin;
+        ProgressDialog dialog;
 
         static ArrayList<KeyValue> parametros = new ArrayList<>();
         Context context;
@@ -251,6 +253,10 @@ public class ClasePeticionRest {
                 parametros.add(new KeyValue("password", password));
             }
             parametros.add(new KeyValue("ubicacion", ubicacion));
+
+            this.dialog = new ProgressDialog(context);
+            this.dialog.setMessage("Please wait");
+            this.dialog.show();
 
         }
 
@@ -276,25 +282,39 @@ public class ClasePeticionRest {
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
             guardarUsuarioEnSharedPreferences(result);
-            Toast.makeText(context, "Creado usuario Nº " + result, Toast.LENGTH_SHORT).show();
+            if (result==0){
+                this.dialog.dismiss();
+                Toast.makeText(context, "Email ya registrado", Toast.LENGTH_SHORT).show();
+
+            }else{
+                Toast.makeText(context, "Creado usuario Nº " + result, Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         public void guardarUsuarioEnSharedPreferences(int id){
 
-            SharedPreferences settings = context.getSharedPreferences("Config", 0);
-            SharedPreferences.Editor editor = settings.edit();
+            if (id!=0){
 
-            editor.putInt("user", id);
-            editor.putString("metodo", metodoLogin);
-            editor.putBoolean("sesion", true);
-            editor.putString("nombre",nombre);
-            editor.putString("apellidos",apellidos);
-            editor.putString("email",email);
+                SharedPreferences settings = context.getSharedPreferences("Config", 0);
+                SharedPreferences.Editor editor = settings.edit();
 
-            editor.commit();
+                editor.putInt("user", id);
+                editor.putString("metodo", metodoLogin);
+                editor.putBoolean("sesion", true);
+                editor.putString("nombre",nombre);
+                editor.putString("apellidos",apellidos);
+                editor.putString("email",email);
 
-            Intent intent = new Intent(context, UsuarioRegistrado.class);
-            context.startActivity(intent);
+                editor.commit();
+
+                Intent intent = new Intent(context, UsuarioRegistrado.class);
+                context.startActivity(intent);
+                ((Activity)context).finish();
+
+            }
+
+
 
         }
 
