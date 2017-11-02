@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+
+import es.unavarra.tlm.prueba.PantallaPrincipal.UsuarioRegistrado;
 
 /**
  * Created by ibai on 10/20/17.
@@ -289,32 +290,25 @@ public class ClasePeticionRest {
             }else{
                 Toast.makeText(context, "Creado usuario Nº " + result, Toast.LENGTH_SHORT).show();
             }
-
         }
 
         public void guardarUsuarioEnSharedPreferences(int id){
 
-            if (id!=0){
+            SharedPreferences settings = context.getSharedPreferences("Config", 0);
+            SharedPreferences.Editor editor = settings.edit();
 
-                SharedPreferences settings = context.getSharedPreferences("Config", 0);
-                SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("user", id);
+            editor.putString("metodo", metodoLogin);
+            editor.putBoolean("sesion", true);
+            editor.putString("nombre",nombre);
+            editor.putString("apellidos",apellidos);
+            editor.putString("email",email);
 
-                editor.putInt("user", id);
-                editor.putString("metodo", metodoLogin);
-                editor.putBoolean("sesion", true);
-                editor.putString("nombre",nombre);
-                editor.putString("apellidos",apellidos);
-                editor.putString("email",email);
+            editor.commit();
 
-                editor.commit();
-
-                Intent intent = new Intent(context, UsuarioRegistrado.class);
-                context.startActivity(intent);
-                ((Activity)context).finish();
-
-            }
-
-
+            Intent intent = new Intent(context, UsuarioRegistrado.class);
+            context.startActivity(intent);
+            ((Activity)context).finish();
 
         }
 

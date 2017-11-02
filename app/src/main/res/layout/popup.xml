@@ -41,7 +41,7 @@
         android:layout_height="80dp"
         android:id="@+id/a"
         android:gravity="center"
-        android:text="@string/contact_us"
+        android:text="CONTÁCTANOS"
         android:textColor="@color/white"
         android:textSize="20dp"
         android:background="@drawable/linear_gradient"

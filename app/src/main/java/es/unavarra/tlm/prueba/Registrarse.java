@@ -32,9 +32,7 @@ public class Registrarse extends AppCompatActivity {
         return objetivo != null && Patterns.EMAIL_ADDRESS.matcher(objetivo).matches();
     }
 
-
     public void clickRegistrarse(View view){
-
 
         EditText edit = (EditText)findViewById(R.id.editText);
         EditText edit2 = (EditText)findViewById(R.id.editText2);
@@ -48,14 +46,13 @@ public class Registrarse extends AppCompatActivity {
         String ubicacion = "42.798617, -1.634627";
         String metodo = "email";
 
+
         if (esMailValido(email)){
             new ClasePeticionRest.GuardarUsuario(Registrarse.this,nombre,apellidos,email,pass,ubicacion,metodo).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else{
             Toast toastMailMalo = Toast.makeText(getApplicationContext(), getString(R.string.toastEmailMalo),Toast.LENGTH_LONG);
             toastMailMalo.show();
         }
-
-
         //new ClasePeticionRest.GuardarUsuario(getApplicationContext(),nombre,apellidos,email,pass,ubicacion,metodo).onPostExecute(result);
 
         //Log.d("resultado", String.valueOf(result));
